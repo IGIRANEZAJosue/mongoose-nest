@@ -41,7 +41,9 @@ export class TaskController {
   update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
     const isValid = mongoose.Types.ObjectId.isValid(id);
     if (!isValid) throw new BadRequestException('Invalid id');
-    return this.taskService.updateTask(id, updateTaskDto);
+    const updatedTask = this.taskService.updateTask(id, updateTaskDto);
+    if (!updatedTask) throw new NotFoundException('Task not');
+    return updatedTask;
   }
 
   @Delete(':id')
