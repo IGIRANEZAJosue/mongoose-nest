@@ -7,25 +7,26 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class TaskService {
-  constructor(@InjectModel(Task.name) private userModel: Model<Task>) {}
+  constructor(@InjectModel(Task.name) private taskModel: Model<Task>) {}
 
-  create(createTaskDto: CreateTaskDto) {
-    return 'This action adds a new task';
+  createTask(createTaskDto: CreateTaskDto) {
+    const newTask = new this.taskModel(createTaskDto);
+    return newTask.save();
   }
 
-  findAll() {
+  findAllTasks() {
     return `This action returns all task`;
   }
 
-  findOne(id: number) {
+  findOneTask(id: number) {
     return `This action returns a #${id} task`;
   }
 
-  update(id: number, updateTaskDto: UpdateTaskDto) {
+  updateTask(id: number, updateTaskDto: UpdateTaskDto) {
     return `This action updates a #${id} task`;
   }
 
-  remove(id: number) {
+  removeTask(id: number) {
     return `This action removes a #${id} task`;
   }
 }
