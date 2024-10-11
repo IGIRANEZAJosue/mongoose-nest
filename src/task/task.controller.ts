@@ -38,16 +38,20 @@ export class TaskController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
+  async update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
     const isValid = mongoose.Types.ObjectId.isValid(id);
     if (!isValid) throw new BadRequestException('Invalid id');
-    const updatedTask = this.taskService.updateTask(id, updateTaskDto);
-    if (!updatedTask) throw new NotFoundException('Task not');
+    const updatedTask = await this.taskService.updateTask(id, updateTaskDto);
+    if (!updatedTask) throw new NotFoundException('Task not found');
     return updatedTask;
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.taskService.removeTask(id);
+  async remove(@Param('id') id: string) {
+    const isValid = mongoose.Types.ObjectId.isValid(id);
+    if (!isValid) throw new BadRequestException('Invalid id ');
+    const deletedTask = await this.taskService.removeTask(id);
+    if (!deletedTask) throw new NotFoundException('Task not found');
+    return deletedTask;
   }
 }
