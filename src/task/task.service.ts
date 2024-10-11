@@ -26,7 +26,7 @@ export class TaskService {
     return `This action updates a #${id} task`;
   }
 
-  removeTask(id: number) {
-    return `This action removes a #${id} task`;
+  removeTask(id: string) {
+    return this.taskModel.findByIdAndDelete(id);
   }
 }
