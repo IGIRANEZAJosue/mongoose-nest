@@ -5,7 +5,7 @@ export class Task {
   @Prop({ required: true })
   title: string;
 
-  @Prop({ required: false })
+  @Prop({ required: false, default: 'There is no description for this task' })
   description?: string;
 
   @Prop({ default: false })
