@@ -18,8 +18,8 @@ export class TaskService {
     return this.taskModel.find();
   }
 
-  findOneTask(id: number) {
-    return `This action returns a #${id} task`;
+  findOneTask(id: string) {
+    return this.taskModel.findById(id);
   }
 
   updateTask(id: number, updateTaskDto: UpdateTaskDto) {
