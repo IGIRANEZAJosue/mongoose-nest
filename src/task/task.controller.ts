@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  NotFoundException,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
+import mongoose from 'mongoose';
 
 @Controller('tasks')
 export class TaskController {
@@ -26,8 +28,12 @@ export class TaskController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.taskService.findOneTask(id);
+  async findOne(@Param('id') id: string) {
+    const isValid = mongoose.Types.ObjectId.isValid(id);
+    if (!isValid) throw new NotFoundException();
+    const foundTask = await this.taskService.findOneTask(id);
+    if (!foundTask) throw new NotFoundException();
+    return foundTask;
   }
 
   @Patch(':id')
