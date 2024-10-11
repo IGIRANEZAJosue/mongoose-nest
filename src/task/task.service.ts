@@ -15,7 +15,7 @@ export class TaskService {
   }
 
   findAllTasks() {
-    return `This action returns all task`;
+    return this.taskModel.find();
   }
 
   findOneTask(id: number) {
