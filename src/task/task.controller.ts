@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -30,15 +31,17 @@ export class TaskController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const isValid = mongoose.Types.ObjectId.isValid(id);
-    if (!isValid) throw new NotFoundException();
+    if (!isValid) throw new BadRequestException('Invalid id');
     const foundTask = await this.taskService.findOneTask(id);
-    if (!foundTask) throw new NotFoundException();
+    if (!foundTask) throw new NotFoundException('Task not found');
     return foundTask;
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-    return this.taskService.updateTask(+id, updateTaskDto);
+    const isValid = mongoose.Types.ObjectId.isValid(id);
+    if (!isValid) throw new BadRequestException('Invalid id');
+    return this.taskService.updateTask(id, updateTaskDto);
   }
 
   @Delete(':id')
